@@ -2,10 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.common.by import By
-from gtts import gTTS
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
+from yapper import PiperSpeaker, PiperVoiceUS
 import re
+import os
+
+os.getcwd()
+current_dir = os.getcwd()
 
 gauth = GoogleAuth()
 gauth.LocalWebserverAuth()
@@ -33,11 +37,12 @@ for text in article:
 
 all_text = '\n'.join(article_text)
 
-tts = gTTS(all_text)
-tts.save(f'{title}.mp3')
+tts = PiperSpeaker(voice=PiperVoiceUS.NORMAN)
+tts.text_to_wave(all_text, f'{title}.wav')
 print('done converting!')
 
-file_path = fr'C:\Users\carson\PycharmProjects\NewYorkerTTS\{title}.mp3'
+
+file_path = os.path.join(current_dir, f'{title}.wav')
 # file1 = drive.CreateFile()
 # file1.SetContentFile()
 # file1.Upload()
