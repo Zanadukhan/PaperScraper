@@ -1,0 +1,1 @@
+Make sure to change tokenizer settings and increase 250 character limit for en in TTS/tts/layers/xtts/tokenizer.py
