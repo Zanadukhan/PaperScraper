@@ -1,5 +1,3 @@
-
-
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import os
@@ -16,16 +14,22 @@ class DriveUploader:
         The name of the folder in Google Drive where the file will be uploaded.
     file_path : str
         The path to the file that will be uploaded.
+    title : str
+        The title of the file to be uploaded.
+    drive : GoogleDrive
+        An authenticated GoogleDrive instance.
     Methods:
     --------
-    __init__(title, drive_folder='articles'):
+    __init__(title: str, drive_folder: str = 'articles'):
         Initializes the DriveUploader with the given title and drive folder.
     upload_file():
         Uploads the file to the specified Google Drive folder.
     """
-    def __init__(self, title, drive_folder='articles'):
+
+    def __init__(self, title: str, drive_folder: str = 'articles'):
         self.drive_folder = drive_folder
         self.file_path = os.path.join(current_dir, f'{title}.mp3')
+        self.title = title
         
         gauth = GoogleAuth()
         gauth.LocalWebserverAuth()

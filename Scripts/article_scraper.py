@@ -8,26 +8,31 @@ import re
 
 class ArticleScraper:
     """
-    A class used to scrape articles from a given URL using Selenium WebDriver.
-    Attributes
-    ----------
-    driver : WebDriver
-        The Selenium WebDriver instance used to interact with the web page.
-    title : str
-        The title of the article.
-    all_text : str
-        The full text of the article, including the header and all paragraphs.
-    Methods
-    -------
-    get_title():
-        Scrapes the title of the article and removes special characters.
-    get_textbody():
-        Scrapes the full text of the article, including the header and all paragraphs.
+    ArticleScraper is a class designed to scrape article titles and text bodies from specified web pages.
+        driver (WebDriver): The Selenium WebDriver instance used to interact with the webpage.
+        title (str): The cleaned title of the article.
+        all_text (str): The complete text body of the article.
+        org (str): The organization identifier to determine which CSS selector to use.
+    Methods:
+        __init__(url):
+            Initializes the ArticleScraper with the given URL, sets up the Selenium WebDriver, and determines the organization.
+        get_title():
+            Uses Selenium to scrape the title of an article from a webpage.
+            Supports different CSS selectors for different organizations (e.g., 'newyorker' and 'foreignpolicy').
+            Cleans the title to remove special characters while preserving spaces.
+        get_textbody():
+            Scrapes the text content of an article from a web page using Selenium WebDriver.
+            Handles different organizations ('newyorker' and 'foreignpolicy') by applying specific scraping logic for each.
+            Collects all paragraph elements and appends their text to the article text list.
+            Includes the article title at the beginning of the text for 'newyorker'.
+            Excludes specific paragraph elements (cookie message, myFP, related articles) from the text for 'foreignpolicy'.
+            Joins the collected text into a single string with newline characters and stores it in the `self.all_text` attribute.
+            Closes the WebDriver instance.
     """
 
-    def __init__(self, url):
+    def __init__(self, url:str):
         options = FirefoxOptions()
-        # options.add_argument("-headless")
+        options.add_argument("-headless")
         self.driver = webdriver.Firefox(options=options, service=FirefoxService(GeckoDriverManager().install()))
         self.driver.get(url)
        
@@ -75,18 +80,20 @@ class ArticleScraper:
            
     def get_textbody(self):
         """
-        Extracts the text body of an article from a web page.
-        This method retrieves the text content of an article based on the organization
-        specified in the `self.org` attribute. It supports extracting text from articles
-        on 'newyorker' and 'foreignpolicy' websites.
-        For 'newyorker', it finds all paragraph elements and appends their text content
-        to the `article_text` list, including the article title. For 'foreignpolicy', it
-        finds the first paragraph element and appends its text content to the `article_text`
-        list, including the article title.
-        The extracted text is then joined into a single string with newline characters
-        and stored in the `self.all_text` attribute.
-        Returns:
-            None
+        Extracts the text body of an article from a web page based on the organization.
+        This method scrapes the text content of an article from a web page using Selenium WebDriver.
+        It handles different organizations ('newyorker' and 'foreignpolicy') by applying specific
+        scraping logic for each.
+        For 'newyorker':
+        - Collects all paragraph elements and appends their text to the article text list.
+        - Includes the article title at the beginning of the text.
+        For 'foreignpolicy':
+        - Excludes specific paragraph elements (cookie message, myFP, related articles) from the text.
+        - Collects all other paragraph elements and appends their text to the article text list.
+        The collected text is then joined into a single string and stored in the `all_text` attribute.
+        The WebDriver instance is quit after the text extraction is complete.
+        Attributes:
+            all_text (str): The concatenated text of the article.
         """
         article_text = []
        
@@ -98,7 +105,22 @@ class ArticleScraper:
             
             self.all_text = '\n'.join(article_text)
         elif self.org == 'foreignpolicy':
+            
+            # Exclude these p elements
+            cookie_message = self.driver.find_element(By.CSS_SELECTOR, '.cookie_message')
+            myFP = self.driver.find_element(By.XPATH, '/html/body/div[1]/main/div[1]/div[2]/article/div[2]/div[1]/p')
+            related_articles = self.driver.find_element(By.CSS_SELECTOR, '.related-articles')
+            
+            self.driver.execute_script("arguments[0].style.display = 'none';", cookie_message)
+            self.driver.execute_script("arguments[0].style.display = 'none';", myFP)
+            self.driver.execute_script("arguments[0].style.display = 'none';", related_articles)
+            
+            
             article = self.driver.find_elements(By.TAG_NAME, 'p')
-            article_text.append(self.title)
+            # article_text.append(self.title)
             for p in article:
+                if p.text == '':
+                    continue
                 article_text.append(p.text)
+        self.all_text = '\n'.join(article_text)
+        self.driver.quit()
