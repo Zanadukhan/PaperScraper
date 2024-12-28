@@ -5,6 +5,24 @@ from selenium.webdriver.common.by import By
 import re
 
 class ArticleScraper:
+    """
+    A class used to scrape articles from a given URL using Selenium WebDriver.
+    Attributes
+    ----------
+    driver : WebDriver
+        The Selenium WebDriver instance used to interact with the web page.
+    title : str
+        The title of the article.
+    all_text : str
+        The full text of the article, including the header and all paragraphs.
+    Methods
+    -------
+    get_title():
+        Scrapes the title of the article and removes special characters.
+    get_textbody():
+        Scrapes the full text of the article, including the header and all paragraphs.
+    """
+
     def __init__(self, url):
        self.driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
        self.driver.get(url)
@@ -18,6 +36,7 @@ class ArticleScraper:
        for k in title_scrape.split('\n'): 
            # needed to remove special characters from title while preserving spaces so that it can create the field
            self.title = " ".join(re.findall(r"[a-zA-Z0-9]+", k))
+           
     def get_textbody(self):
        article_text = []
        article = self.driver.find_elements(By.TAG_NAME, 'p')
