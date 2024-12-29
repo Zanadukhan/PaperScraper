@@ -49,7 +49,6 @@ class ArticleScraper:
         else:
             domain = domain_parts[0]
         
-        print(domain)
         self.org = domain
        
        
@@ -108,7 +107,7 @@ class ArticleScraper:
             
             # Exclude these p elements
             cookie_message = self.driver.find_element(By.CSS_SELECTOR, '.cookie_message')
-            myFP = self.driver.find_element(By.XPATH, '/html/body/div[1]/main/div[1]/div[2]/article/div[2]/div[1]/p')
+            myFP = self.driver.find_element(By.CSS_SELECTOR, '.js-myfp-message')
             related_articles = self.driver.find_element(By.CSS_SELECTOR, '.related-articles')
             
             self.driver.execute_script("arguments[0].style.display = 'none';", cookie_message)
