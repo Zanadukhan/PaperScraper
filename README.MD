@@ -41,7 +41,7 @@ This script uses selenium to scrape a given article, transform the text into spe
 ##  Features
 
 * Able to scrape text from different articles (New Yorker & Foreign Policy)
-* Use Coqui-TTS or Piper-TTS based on different requirements (Speed vs Quality)
+* Use Coqui-TTS or Piper-TTS based on different requirements (Quality vs Speed)
 * Automatic upload of audio file to your google drive account
 
 ---
@@ -71,15 +71,12 @@ This script uses selenium to scrape a given article, transform the text into spe
 			<table>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/LICENSE.txt'>LICENSE.txt</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/requirements.txt'>requirements.txt</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/README.MD'>README.MD</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
 			</tr>
 			</table>
 		</blockquote>
@@ -90,19 +87,19 @@ This script uses selenium to scrape a given article, transform the text into spe
 			<table>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/Scripts/drive_uploader.py'>drive_uploader.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td>- Uploads files to Google Drive using the pydrive2 library, allowing users to efficiently manage their media content within a designated folder structure<br>- The script enables seamless file uploads, ensuring that files are properly organized and accessible across different devices<br>- It facilitates collaboration and data sharing by providing a centralized platform for storing and retrieving files.</td>
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/Scripts/main.py'>main.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td>- Scrape articles from user input, extract title and text body, generate audio using TextToSpeech, and upload to drive with a custom title<br>- The script orchestrates the workflow by creating an ArticleScraper instance, retrieving article data, generating audio based on software choice, and uploading the file to Drive<br>- This process enables automated content creation and distribution within the project's architecture.</td>
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/Scripts/audio_generation.py'>audio_generation.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td>- The main purpose of the `audio_generation.py` file is to provide a unified interface for converting text to speech using different TTS software, such as Piper and Coqui<br>- The class `TextToSpeech` allows users to specify the desired output format and language, enabling flexible audio generation across various platforms.</td><br>- Coqui-tts outputs higher quality audio but takes much longer (especially without the use of a GPU with CUDA) while Piper-tts is faster but is lower quality</td>
 			</tr>
 			<tr>
 				<td><b><a href='https://github.com/Zanadukhan/PaperScraper/blob/master/Scripts/article_scraper.py'>article_scraper.py</a></b></td>
-				<td><code>❯ REPLACE-ME</code></td>
+				<td>- Scrape article titles and text bodies from web pages using the provided script<br>- The ArticleScraper class initializes with a URL, sets up a Selenium WebDriver instance, and determines the organization identifier to apply specific scraping logic<br>- It extracts title and text body content while handling different organizations (newyorker and foreignpolicy) through CSS selectors and custom scraping logic.</td>
 			</tr>
 			</table>
 		</blockquote>
@@ -118,6 +115,7 @@ Before getting started with PaperScraper, ensure your runtime environment meets 
 
 - **Programming Language:** Python
 - **Package Manager:** Pip
+- **Graphics Card:** Nvidia (recommended for use with coqui-tts)
 
 
 ###  Installation
@@ -128,7 +126,7 @@ Install PaperScraper using one of the following methods:
 
 1. Clone the PaperScraper repository:
 ```sh
-❯ git clone https://github.com/Zanadukhan/PaperScraper
+❯ git clone git@github.com:Zanadukhan/PaperScraper.git
 ```
 
 2. Navigate to the project directory:
@@ -150,16 +148,15 @@ Install PaperScraper using one of the following methods:
 
 ###  Usage
 Run PaperScraper using the following command:
-**Using `pip`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Pip-3776AB.svg?style={badge_style}&logo=pypi&logoColor=white" />](https://pypi.org/project/pip/)
 
 ```sh
-❯ python {entrypoint}
+❯ python main.py
 ```
 
 
 ###  Testing
 Run the test suite using the following command:
-**Using `pip`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Pip-3776AB.svg?style={badge_style}&logo=pypi&logoColor=white" />](https://pypi.org/project/pip/)
+
 
 ```sh
 ❯ pytest
@@ -186,7 +183,7 @@ Run the test suite using the following command:
 1. **Fork the Repository**: Start by forking the project repository to your github account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
    ```sh
-   git clone https://github.com/Zanadukhan/PaperScraper
+   git clone git@github.com:Zanadukhan/PaperScraper.git
    ```
 3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
    ```sh

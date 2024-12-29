@@ -66,6 +66,6 @@ class TextToSpeech:
         text = self.text,
         speaker="Claribel Dervla",
         language="en",
-        file_path=f'{title}.mp3'
+        file_path=f'{title}.wav'
         )
         print('done converting!')
