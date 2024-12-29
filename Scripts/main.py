@@ -20,3 +20,4 @@ if __name__ == '__main__':
 
     drive = DriveUploader(article.title)
     drive.upload_file()
+Make sure to change tokenizer settings and increase 250 character limit for en in TTS/tts/layers/xtts/tokenizer.py
