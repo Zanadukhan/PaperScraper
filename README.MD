@@ -169,6 +169,7 @@ Run the test suite using the following command:
 - [ ] **`Implement unit tests`**: Test code and achieve coverage of 80%+
 - [ ] **`Scrape multiple links`**: Allow user to provide multiple
 - [ ] **`Add more supported sites`**: Expand the number of supported sites that the webscraper can handle
+- [ ] **`Add randomized voice selection`**: Greater diversity of voice choices for the user
 ---
 
 ##  Contributing
