@@ -115,7 +115,10 @@ Before getting started with PaperScraper, ensure your runtime environment meets 
 
 - **Programming Language:** Python
 - **Package Manager:** Pip
-- **Graphics Card:** Nvidia (recommended for use with coqui-tts)
+- **Graphics Card:** Nvidia card compatible with CUDA(recommended for use with coqui-tts)
+- **Client_Secret.json from google:** Needed in order to authenticate with Oauthv2 
+
+guide: https://pythonhosted.org/PyDrive/quickstart.html
 
 
 ###  Installation
