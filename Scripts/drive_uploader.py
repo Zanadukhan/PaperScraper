@@ -28,7 +28,7 @@ class DriveUploader:
 
     def __init__(self, title: str, drive_folder: str = 'articles'):
         self.drive_folder = drive_folder
-        self.file_path = os.path.join(current_dir, f'{title}.mp3')
+        self.file_path = os.path.join(current_dir, f'{title}.wav')
         self.title = title
         
         gauth = GoogleAuth()
