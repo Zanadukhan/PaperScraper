@@ -121,6 +121,9 @@ Before getting started with PaperScraper, ensure your runtime environment meets 
 guide: https://pythonhosted.org/PyDrive/quickstart.html
 
 
+**Note:** If you decide to use Coqui-tts, Make sure to change tokenizer settings and increase 250 character limit for en in TTS/tts/layers/xtts/tokenizer.py. Otherwise, long paragraphs that exceed the tokens will not be read
+
+
 ###  Installation
 
 Install PaperScraper using one of the following methods:
