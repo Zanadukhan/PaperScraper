@@ -1,7 +1,8 @@
 from yapper import PiperSpeaker, PiperVoiceUS
-import torch
 from TTS.api import TTS
 
+import random
+import torch
 
 
 class TextToSpeech:
@@ -20,24 +21,24 @@ class TextToSpeech:
     coqui_to_speech(title):
         Converts text to speech using Coqui TTS and saves it as a .mp3 file.
     """
-    def __init__(self, text, software='coqui'):
+    def __init__(self, text, software='coqui', speaker='random'):
         self.text = text
         self.software = software
+        self.speaker = speaker
 
     def piper_to_speech(self, title:str):
         """
-        Converts text to speech and saves it as a .wav file using piper tts.
-
+        Converts the provided text to speech and saves it as a .wav file with the given title.
         Args:
-            title (str): The title of the output .wav file.
-
-        Returns:
-            None
-
-        Example:
-            self.piper_to_speech("output_filename")
+            title (str): The title to be used for the output .wav file.
+        Raises:
+            ValueError: If the speaker is not set and cannot be randomly chosen.
         """
-        tts = PiperSpeaker(voice=PiperVoiceUS.LIBRITTS_R)
+        if self.speaker == 'random':
+            speakers = [PiperVoiceUS.LIBRITTS_R, PiperVoiceUS.NORMAN, PiperVoiceUS.RYAN, PiperVoiceUS.AMY, PiperVoiceUS.BRYCE]
+            self.speaker = random.choice(speakers)
+            
+        tts = PiperSpeaker(voice=self.speaker)
         tts.text_to_wave(f'{self.text}', f'{title}.wav')
         print('done converting!')
     
@@ -57,15 +58,53 @@ class TextToSpeech:
         Notes:
             - The function uses a GPU if available, otherwise it falls back to the CPU.
             - The TTS model used is 'tts_models/multilingual/multi-dataset/xtts_v2'.
-            - The speaker used for the TTS is "Claribel Dervla".
+            - The speaker used for the TTS is "Claribel Dervla" unless speaker is send to random, then a speaker is randomly chosen from the list.
             - The language for the TTS is set to English ("en").
         """
         device = "cuda" if torch.cuda.is_available() else "cpu"
+        
+        if self.speaker == 'random':
+            speakers = ['Claribel Dervla', 'Damian Black', 'Baldur Sanjin', 'Barbora MacLean', 'Alexandra Hisakawa', 'Adde Michal' ]
+            self.speaker = random.choice(speakers)
+            
         tts = TTS(model_name='tts_models/multilingual/multi-dataset/xtts_v2').to(device)
         tts.tts_to_file(
         text = self.text,
-        speaker="Claribel Dervla",
+        speaker=self.speaker,
         language="en",
         file_path=f'{title}.wav'
         )
         print('done converting!')
+        
+        @staticmethod
+        def recommended_speakers():
+            """
+            Returns a list of recommended speakers for the Piper/Coqui TTS.
+
+            Returns:
+                list: A list of recommended speakers for the Piper/Coqui TTS.
+
+            Example:
+                recommended_speakers()
+            """
+            list_of_speakers = """
+            Piper TTS:
+            - LIBRITTS_R
+            - NORMAN
+            - RYAN
+            - AMY
+            - BRYCE
+            
+            NOTE: The speaker names must be passed in beginning with: PiperVoiceUS.speaker_name
+            
+            Coqui TTS:
+            - Claribel Dervla
+            - Damian Black
+            - Baldur Sanjin
+            - Barbora MacLean
+            - Alexandra Hisakawa
+            - Adde Michal
+            
+            If you would like to use one of these speakers, pass the speaker name when creating a new instance of the TextToSpeech class.
+            
+            """

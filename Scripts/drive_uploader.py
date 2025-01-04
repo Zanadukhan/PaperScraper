@@ -3,7 +3,8 @@ from pydrive2.drive import GoogleDrive
 import os
 
 
-current_dir = os.getcwd()
+CURRENT_DIR = os.getcwd()
+GoogleAuth.DEFAULT_SETTINGS['client_config_file'] = 'client_secrets.json'
 
 class DriveUploader:
     """
@@ -28,14 +29,17 @@ class DriveUploader:
 
     def __init__(self, title: str, drive_folder: str = 'articles'):
         self.drive_folder = drive_folder
-        self.file_path = os.path.join(current_dir, f'{title}.wav')
+        self.file_path = os.path.join(CURRENT_DIR, f'{title}.wav')
+        print(self.file_path)
         self.title = title
+        
         
         gauth = GoogleAuth()
         gauth.LocalWebserverAuth()
         self.drive = GoogleDrive(gauth)
         
     def upload_file(self):
+
         folders = self.drive.ListFile(
             {'q': "title='" + self.drive_folder + "' and mimeType='application/vnd.google-apps.folder' and trashed=false"}).GetList()
         for folder in folders:

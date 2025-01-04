@@ -155,10 +155,11 @@ Install PaperScraper using one of the following methods:
 ###  Usage
 Run PaperScraper using the following command:
 
-```sh
+```python
 ❯ python main.py
 ```
 
+provide link to url that you want to scrape
 
 ###  Testing
 Run the test suite using the following command:
@@ -173,9 +174,10 @@ Run the test suite using the following command:
 ##  Project Roadmap
 
 - [ ] **`Implement unit tests`**: Test code and achieve coverage of 80%+
-- [ ] **`Scrape multiple links`**: Allow user to provide multiple
+- [ ] **`Scrape multiple links`**: Allow user to provide multiple links at one
 - [ ] **`Add more supported sites`**: Expand the number of supported sites that the webscraper can handle
-- [ ] **`Add randomized voice selection`**: Greater diversity of voice choices for the user
+- [x] ~~**`Add randomized voice selection`**: Greater diversity of voice choices for the user~~
+- [ ] **`create exe`**: Easier use for users without needing to clone a script
 ---
 
 ##  Contributing

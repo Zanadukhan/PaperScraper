@@ -1,6 +1,7 @@
 from article_scraper import ArticleScraper
 from drive_uploader import DriveUploader
 from audio_generation import TextToSpeech
+from tqdm import tqdm
 
 
 
@@ -10,7 +11,7 @@ if __name__ == '__main__':
     article.get_title()
     article.get_textbody()
 
-    tts = TextToSpeech(article.all_text)
+    tts = TextToSpeech(article.all_text, software='coqui')
     match tts.software:
         case 'coqui':
             tts.coqui_to_speech(article.title)
