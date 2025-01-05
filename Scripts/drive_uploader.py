@@ -29,17 +29,17 @@ class DriveUploader:
 
     def __init__(self, title: str, drive_folder: str = 'articles'):
         self.drive_folder = drive_folder
-        self.file_path = os.path.join(CURRENT_DIR, f'{title}.wav')
+        self.file_path = os.path.join(CURRENT_DIR, 'audio_files', f'{title}.wav')
         print(self.file_path)
-        self.title = title
+        self.title = ''
         
         
         gauth = GoogleAuth()
         gauth.LocalWebserverAuth()
         self.drive = GoogleDrive(gauth)
         
-    def upload_file(self):
-
+    def upload_file(self, title):
+        self.title = title
         folders = self.drive.ListFile(
             {'q': "title='" + self.drive_folder + "' and mimeType='application/vnd.google-apps.folder' and trashed=false"}).GetList()
         for folder in folders:

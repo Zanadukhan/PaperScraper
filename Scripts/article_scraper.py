@@ -51,7 +51,6 @@ class ArticleScraper:
         
         self.org = domain
        
-       
     def get_title(self):
         """
         Extracts and processes the title of an article based on the organization.

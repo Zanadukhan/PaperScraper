@@ -1,5 +1,7 @@
-import random
+import os
 
-speakers = ['Claribel Dervla', 'Damian Black', 'Baldur Sanjin', 'Barbora MacLean', 'Alexandra Hisakawa', 'Adde Michal' ]
+CURRENT_DIR = os.getcwd()
 
-print(random.choice(speakers))
+file_path = os.path.join(CURRENT_DIR, f'/audio_files/test.wav')
+
+print(file_path)
