@@ -24,8 +24,18 @@ class TextToSpeech:
     def __init__(self, text, software='coqui', speaker='random'):
         self.text = text
         self.software = software
-        self.speaker = speaker
+        
+        if speaker == 'random' and software == 'coqui':
+            speakers = ['Claribel Dervla', 'Damian Black', 'Baldur Sanjin', 'Barbora MacLean', 'Alexandra Hisakawa', 'Adde Michal' ]
+            self.speaker = random.choice(speakers)
+        elif speaker == 'random' and software == 'piper':
+            speakers = [PiperVoiceUS.LIBRITTS_R, PiperVoiceUS.NORMAN, PiperVoiceUS.RYAN, PiperVoiceUS.AMY, PiperVoiceUS.BRYCE]
+            self.speaker = random.choice(speakers)
+        else:
+            self.speaker = speaker
 
+    
+    
     def piper_to_speech(self, title:str):
         """
         Converts the provided text to speech and saves it as a .wav file with the given title.
@@ -34,12 +44,9 @@ class TextToSpeech:
         Raises:
             ValueError: If the speaker is not set and cannot be randomly chosen.
         """
-        if self.speaker == 'random':
-            speakers = [PiperVoiceUS.LIBRITTS_R, PiperVoiceUS.NORMAN, PiperVoiceUS.RYAN, PiperVoiceUS.AMY, PiperVoiceUS.BRYCE]
-            self.speaker = random.choice(speakers)
             
         tts = PiperSpeaker(voice=self.speaker)
-        tts.text_to_wave(f'{self.text}', f'{title}.wav')
+        tts.text_to_wave(f'{self.text}', f'audio_files/{title}.wav')
         print('done converting!')
     
     def coqui_to_speech(self, title:str):
@@ -58,21 +65,16 @@ class TextToSpeech:
         Notes:
             - The function uses a GPU if available, otherwise it falls back to the CPU.
             - The TTS model used is 'tts_models/multilingual/multi-dataset/xtts_v2'.
-            - The speaker used for the TTS is "Claribel Dervla" unless speaker is send to random, then a speaker is randomly chosen from the list.
             - The language for the TTS is set to English ("en").
         """
         device = "cuda" if torch.cuda.is_available() else "cpu"
         
-        if self.speaker == 'random':
-            speakers = ['Claribel Dervla', 'Damian Black', 'Baldur Sanjin', 'Barbora MacLean', 'Alexandra Hisakawa', 'Adde Michal' ]
-            self.speaker = random.choice(speakers)
-            
         tts = TTS(model_name='tts_models/multilingual/multi-dataset/xtts_v2').to(device)
         tts.tts_to_file(
         text = self.text,
         speaker=self.speaker,
         language="en",
-        file_path=f'{title}.wav'
+        file_path=f'/audio_files/{title}.wav'
         )
         print('done converting!')
         
@@ -108,3 +110,4 @@ class TextToSpeech:
             If you would like to use one of these speakers, pass the speaker name when creating a new instance of the TextToSpeech class.
             
             """
+            print(list_of_speakers)

@@ -159,7 +159,12 @@ Run PaperScraper using the following command:
 ❯ python main.py
 ```
 
-provide link to url that you want to scrape
+Either provide a link to the article that you want to scrape, or create a txt file with links listed like so
+
+ex.
+link1
+link2
+link3
 
 ###  Testing
 Run the test suite using the following command:
