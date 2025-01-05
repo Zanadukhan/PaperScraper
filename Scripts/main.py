@@ -45,12 +45,12 @@ def main():
     """
     drive = DriveUploader()
     
-    for link in tqdm(return_links()):
+    for link in tqdm(return_links(), desc='Processing articles'):
         article = ArticleScraper(link)
         article.get_title()
         article.get_textbody()
 
-        tts = TextToSpeech(article.all_text, software='piper')
+        tts = TextToSpeech(article.all_text)
         match tts.software:
             case 'coqui':
                 tts.coqui_to_speech(article.title)

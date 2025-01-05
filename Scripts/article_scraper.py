@@ -1,10 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.firefox import GeckoDriverManager
+from selenium.common.exceptions import NoSuchElementException 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse
 import re
+import time
 
 class ArticleScraper:
     """
@@ -68,10 +72,13 @@ class ArticleScraper:
             NoSuchElementException: If the specified CSS selector does not match any elements on the page.
         """
         title_scrape = ''
-        if self.org == 'foreignpolicy':
-            title_scrape = self.driver.find_element(By.CSS_SELECTOR, 'h1.hed').text
-        elif self.org == 'newyorker':
-            title_scrape = self.driver.find_element(By.CSS_SELECTOR, 'h1.BaseWrap-sc-gjQpdd').text   
+        
+        match self.org:
+            case 'foreignpolicy':
+                title_scrape = self.driver.find_element(By.CSS_SELECTOR, 'h1.hed').text
+            case 'newyorker':
+                title_scrape = self.driver.find_element(By.CSS_SELECTOR, 'h1.BaseWrap-sc-gjQpdd').text   
+                
         for k in title_scrape.split('\n'): 
             # needed to remove special characters from title while preserving spaces so that it can create the field
             self.title = " ".join(re.findall(r"[a-zA-Z0-9]+", k))
@@ -94,31 +101,37 @@ class ArticleScraper:
             all_text (str): The concatenated text of the article.
         """
         article_text = []
-       
-        if self.org == 'newyorker':
-            article = self.driver.find_elements(By.TAG_NAME, 'p')
-            article_text.append(self.title)
-            for p in article:
-                article_text.append(p.text)
+
+        match self.org:
+            case 'newyorker':
+                article = self.driver.find_elements(By.TAG_NAME, 'p')
+                article_text.append(self.title)
+                for p in article:
+                    article_text.append(p.text)
+                
+            case 'foreignpolicy':
             
-            self.all_text = '\n'.join(article_text)
-        elif self.org == 'foreignpolicy':
-            
-            # Exclude these p elements
-            cookie_message = self.driver.find_element(By.CSS_SELECTOR, '.cookie_message')
-            myFP = self.driver.find_element(By.CSS_SELECTOR, '.js-myfp-message')
-            related_articles = self.driver.find_element(By.CSS_SELECTOR, '.related-articles')
-            
-            self.driver.execute_script("arguments[0].style.display = 'none';", cookie_message)
-            self.driver.execute_script("arguments[0].style.display = 'none';", myFP)
-            self.driver.execute_script("arguments[0].style.display = 'none';", related_articles)
-            
-            
-            article = self.driver.find_elements(By.TAG_NAME, 'p')
-            # article_text.append(self.title)
-            for p in article:
-                if p.text == '':
-                    continue
-                article_text.append(p.text)
+                # Exclude these p elements
+                cookie_message = self.driver.find_element(By.CSS_SELECTOR, '.cookie_message')
+                myFP = self.driver.find_element(By.CSS_SELECTOR, '.js-myfp-message')
+                
+                try:
+                    related_articles = self.driver.find_element(By.CSS_SELECTOR, '.related-articles')
+                    self.driver.execute_script("arguments[0].style.display = 'none';", related_articles)
+                except NoSuchElementException:
+                    pass
+                
+                self.driver.execute_script("arguments[0].style.display = 'none';", cookie_message)
+                self.driver.execute_script("arguments[0].style.display = 'none';", myFP)
+                
+                
+                
+                article = self.driver.find_elements(By.TAG_NAME, 'p')
+                # article_text.append(self.title)
+                for p in article:
+                    if p.text == '':
+                        continue
+                    article_text.append(p.text)
+                
         self.all_text = '\n'.join(article_text)
         self.driver.quit()

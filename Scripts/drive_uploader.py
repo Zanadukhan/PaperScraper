@@ -27,9 +27,9 @@ class DriveUploader:
         Uploads the file to the specified Google Drive folder.
     """
 
-    def __init__(self, title: str, drive_folder: str = 'articles'):
+    def __init__(self, drive_folder: str = 'articles'):
         self.drive_folder = drive_folder
-        self.file_path = os.path.join(CURRENT_DIR, 'audio_files', f'{title}.wav')
+        self.file_path = ''
         print(self.file_path)
         self.title = ''
         
@@ -40,6 +40,8 @@ class DriveUploader:
         
     def upload_file(self, title):
         self.title = title
+        self.file_path = os.path.join(CURRENT_DIR, 'audio_files', f'{title}.wav')
+        
         folders = self.drive.ListFile(
             {'q': "title='" + self.drive_folder + "' and mimeType='application/vnd.google-apps.folder' and trashed=false"}).GetList()
         for folder in folders:

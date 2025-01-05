@@ -1,25 +1,39 @@
 from yapper import PiperSpeaker, PiperVoiceUS
 from TTS.api import TTS
-
+import os
 import random
 import torch
 
 
 class TextToSpeech:
     """
-    A class to convert text to speech using different TTS software.
+    A class for converting text to speech using either Coqui TTS or Piper TTS engines.
+    
+    This class provides a unified interface for text-to-speech conversion with support
+    for multiple speakers and different TTS engines. It can generate audio files in
+    WAV format using either Coqui or Piper TTS systems.
+
     Attributes:
-    -----------
-    text : str
-        The text to be converted to speech.
-    software : str, optional
-        The TTS software to use (default is 'coqui').
-    Methods:
-    --------
-    piper_to_speech(title):
-        Converts text to speech using Piper TTS and saves it as a .wav file.
-    coqui_to_speech(title):
-        Converts text to speech using Coqui TTS and saves it as a .mp3 file.
+        text (str): The text to be converted to speech.
+        software (str): The TTS engine to use ('coqui' or 'piper').
+        speaker (str): The voice to use for speech generation.
+
+    Examples:
+        Basic usage with Coqui TTS:
+        >>> tts = TextToSpeech("Hello, world!")
+        >>> tts.coqui_to_speech("greeting")
+
+        Using Piper TTS with specific speaker:
+        >>> tts = TextToSpeech(
+        ...     text="Welcome to the application",
+        ...     software='piper',
+        ...     speaker=PiperVoiceUS.NORMAN
+        ... )
+        >>> tts.piper_to_speech("welcome_message")
+
+    Note:
+        - Requires an 'audio_files' directory in the current working directory
+        - GPU acceleration is automatically used when available for Coqui TTS
     """
     def __init__(self, text, software='coqui', speaker='random'):
         self.text = text
@@ -74,8 +88,10 @@ class TextToSpeech:
         text = self.text,
         speaker=self.speaker,
         language="en",
-        file_path=f'/audio_files/{title}.wav'
+        file_path=f'audio_files/{title}.wav'
         )
+        
+        # os.replace(f'{title}.wav', f'audio_files/{title}.wav')
         print('done converting!')
         
         @staticmethod

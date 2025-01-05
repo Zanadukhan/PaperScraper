@@ -34,12 +34,13 @@
 
 ##  Overview
 
-This script uses selenium to scrape a given article, transform the text into speech using different TTS packages, and uploads them to your google drive for convenient retrieval for mobile device use.
+This script uses selenium to scrape a given article(s), transform the text into speech using different TTS packages, and uploads them to your google drive for convenient retrieval for mobile device use.
 
 ---
 
 ##  Features
 
+* Can take either a single URL or a list of URLs from a text file
 * Able to scrape text from different articles (New Yorker & Foreign Policy)
 * Use Coqui-TTS or Piper-TTS based on different requirements (Quality vs Speed)
 * Automatic upload of audio file to your google drive account
@@ -179,7 +180,7 @@ Run the test suite using the following command:
 ##  Project Roadmap
 
 - [ ] **`Implement unit tests`**: Test code and achieve coverage of 80%+
-- [ ] **`Scrape multiple links`**: Allow user to provide multiple links at one
+- [x] ~~**`Scrape multiple links`**: Allow user to provide multiple links at one~~
 - [ ] **`Add more supported sites`**: Expand the number of supported sites that the webscraper can handle
 - [x] ~~**`Add randomized voice selection`**: Greater diversity of voice choices for the user~~
 - [ ] **`create exe`**: Easier use for users without needing to clone a script
