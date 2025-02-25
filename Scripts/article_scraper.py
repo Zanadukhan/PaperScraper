@@ -36,7 +36,10 @@ class ArticleScraper:
 
     def __init__(self, url:str):
         options = FirefoxOptions()
-        options.add_argument("-headless")
+        # headless causing issues with browsing context discard
+        # options.add_argument("-headless")
+        # needed to disable javascript to prevent paywalls from hiding elements on the page
+        options.set_preference('javascript.enabled', False)
         self.driver = webdriver.Firefox(options=options, service=FirefoxService(GeckoDriverManager().install()))
         self.driver.get(url)
        

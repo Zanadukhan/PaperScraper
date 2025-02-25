@@ -118,6 +118,7 @@ Before getting started with PaperScraper, ensure your runtime environment meets 
 - **Package Manager:** Pip
 - **Graphics Card:** Nvidia card compatible with CUDA(recommended for use with coqui-tts)
 - **Client_Secret.json from google:** Needed in order to authenticate with Oauthv2 
+- **firefox** The superior browser and the one I personally use
 
 guide: https://pythonhosted.org/PyDrive/quickstart.html
 
@@ -166,6 +167,8 @@ ex.
 link1
 link2
 link3
+
+Follow the authentication flow in order to connect to your google drive
 
 ###  Testing
 Run the test suite using the following command:

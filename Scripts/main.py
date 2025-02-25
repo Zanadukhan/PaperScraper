@@ -43,9 +43,12 @@ def main():
     - The `return_links` function is assumed to provide the necessary links for scraping.
     - The `article.all_text` and `article.title` are used for text-to-speech conversion and file naming respectively.
     """
-    drive = DriveUploader()
+    
     
     for link in tqdm(return_links(), desc='Processing articles'):
+        # reauthenticate for each link in order to prevent invalid_grant: Bad request issue
+        drive = DriveUploader()
+        
         article = ArticleScraper(link)
         article.get_title()
         article.get_textbody()
